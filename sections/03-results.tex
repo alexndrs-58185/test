@@ -1,0 +1,26 @@
+\section{Results}
+Figure~\ref{fig:signal} is loaded from \texttt{figures/}. For a figure that
+spans both columns, use \texttt{figure*} instead.
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{example-plot}
+  \caption{A damped signal with observations.}
+  \label{fig:signal}
+\end{figure}
+
+\begin{table}[t]
+  \centering
+  \caption{Results compared against two baselines.}
+  \label{tab:results}
+  \small
+  \begin{tabular}{lcc}
+    \toprule
+    \textbf{Method} & \textbf{Accuracy} & \textbf{Time (s)}\\
+    \midrule
+    Baseline A & 0.81 & 12.4\\
+    Baseline B & 0.86 & \phantom{0}9.7\\
+    \textbf{Ours} & \textbf{0.92} & \phantom{0}8.1\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+Present findings and reference Table~\ref{tab:results}.

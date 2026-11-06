@@ -1,0 +1,74 @@
+% =====================================================================
+%  inscrive-article.sty  -  styling for the Inscrive article template
+%  ---------------------------------------------------------------
+%  A modern two-column research-paper style. All visual styling lives
+%  here; sections/ hold the prose. Compile with pdfLaTeX + biber.
+% =====================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{inscrive-article}[2026/06/20 Inscrive article style]
+
+% ---- Palette --------------------------------------------------------
+\RequirePackage{xcolor}
+\definecolor{accent}{HTML}{27496D}   % slate blue
+\definecolor{ink}{HTML}{1A1A1A}
+\definecolor{muted}{HTML}{6B7280}
+\definecolor{tint}{HTML}{EEF2F7}     % soft abstract background
+
+% ---- Typography: Palatino serif body, Fira Sans headings, mono code -
+\RequirePackage{mathpazo}
+\IfFileExists{FiraSans.sty}{\RequirePackage[scaled=0.92]{FiraSans}}{\RequirePackage{helvet}}
+\IfFileExists{inconsolata.sty}{\RequirePackage[varqu,scaled=0.92]{inconsolata}}{}
+\RequirePackage{microtype}
+\newcommand*{\headfont}{\sffamily}
+
+% ---- Layout ---------------------------------------------------------
+\RequirePackage[a4paper,margin=1.9cm,columnsep=0.7cm]{geometry}
+\RequirePackage{graphicx}\graphicspath{{figures/}}
+\RequirePackage{booktabs}
+\RequirePackage{amsmath,amssymb}
+\RequirePackage{enumitem}\setlist{noitemsep,topsep=2pt,leftmargin=1.4em}
+\RequirePackage[font=small,labelfont={bf,sf},labelsep=period]{caption}
+
+% ---- Section styling ------------------------------------------------
+\RequirePackage{titlesec}
+\titleformat{\section}{\headfont\large\bfseries\color{ink}}{\color{accent}\thesection}{0.6em}{}
+\titleformat{\subsection}{\headfont\normalsize\bfseries\color{ink}}{\color{accent}\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.1em}{0.4em}
+
+% ---- Header / footer ------------------------------------------------
+\RequirePackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[C]{\footnotesize\headfont\color{muted}\runninghead}
+\fancyfoot[C]{\footnotesize\headfont\color{muted}\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\newcommand{\runninghead}{}
+\newcommand{\setrunninghead}[1]{\renewcommand{\runninghead}{#1}}
+
+% ---- Links & bibliography ------------------------------------------
+\RequirePackage[hidelinks]{hyperref}
+\hypersetup{colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent}
+\IfFileExists{biblatex.sty}{%
+  \RequirePackage[backend=biber,style=numeric-comp,sorting=none,giveninits=true]{biblatex}}{}
+
+% ---- Title block ----------------------------------------------------
+\newcommand{\@keywords}{}\newcommand{\keywords}[1]{\renewcommand{\@keywords}{#1}}
+% \articletitle prints a full-width title + abstract band across both cols
+\newcommand{\articletitle}[1]{%
+  \twocolumn[{%
+    \begin{@twocolumnfalse}
+      {\color{accent}\rule{\textwidth}{1.4pt}}\vspace{0.7em}\par
+      {\headfont\bfseries\fontsize{20}{24}\selectfont\color{ink}\@title\par}
+      \vspace{0.8em}{\@author\par}\vspace{1.0em}
+      % abstract in a soft tinted block
+      \begingroup\setlength{\fboxsep}{12pt}%
+      \noindent\colorbox{tint}{\parbox{\dimexpr\textwidth-24pt}{%
+        {\headfont\bfseries\color{accent}\small ABSTRACT}\par\vspace{3pt}
+        \small #1
+        \ifx\@keywords\empty\else\par\vspace{5pt}%
+          {\headfont\bfseries\footnotesize Keywords:\ }{\footnotesize\@keywords}\fi}}%
+      \endgroup
+      \vspace{1.4em}
+    \end{@twocolumnfalse}
+  }]%
+}
+\endinput
